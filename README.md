@@ -10,4 +10,4 @@ A simple objective-C wrapper for the Mailgun email validation API.
                                         } failure:^(NSError *error) {
                                             // :(
                                         }];
-```o
+```
