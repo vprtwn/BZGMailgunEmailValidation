@@ -7,11 +7,11 @@ http://blog.mailgun.com/post/free-email-validation-api-for-web-forms/
 http://documentation.mailgun.com/api-email-validation.html
 
 ```objective-c
-[BZGMailgunEmailValidation validateEmailAddress:address
-                                      publicKey:YOUR_MAILGUN_PUBLIC_KEY
-                                        success:^(BOOL isValid, NSString *didYouMean) {
-                                            // :)
-                                        } failure:^(NSError *error) {
-                                            // :(
-                                        }];
+BZGMailgunEmailValidator *validator = [BZGMailgunEmailValidator validatorWithPublicKey:YOUR_MAILGUN_PUBLIC_KEY operationQueue:queue];
+[validator validateEmailAddress:self.emailFieldCell.textField.text
+                        success:^(BOOL isValid, NSString *didYouMean) {
+                        // :)
+                      } failure:^(NSError *error) {
+                        // :(
+                      }];
 ```
