@@ -1,15 +1,25 @@
-//
-// BZGMailgunEmailValidation
-//
-// https://github.com/benzguo/BZGMailgunEmailValidation
-//
+#import "BZGMailgunEmailValidator.h"
 
-#import "BZGMailgunEmailValidation.h"
+@interface BZGMailgunEmailValidator ()
 
-@implementation BZGMailgunEmailValidation
+@property (strong, nonatomic) NSString *publicKey;
+@property (strong, nonatomic) NSOperationQueue *operationQueue;
 
-+ (void)validateEmailAddress:(NSString *)address
-                   publicKey:(NSString *)publicKey
+@end
+
+@implementation BZGMailgunEmailValidator
+
++ (BZGMailgunEmailValidator *)validatorWithPublicKey:(NSString *)publicKey operationQueue:(NSOperationQueue *)operationQueue
+{
+    BZGMailgunEmailValidator *validator = [[BZGMailgunEmailValidator alloc] init];
+    if (validator) {
+        validator.publicKey = publicKey;
+        validator.operationQueue = operationQueue;
+    }
+    return validator;
+}
+
+- (void)validateEmailAddress:(NSString *)address
                      success:(void (^)(BOOL isValid, NSString *didYouMean))success
                      failure:(void (^)(NSError *error))failure
 {
@@ -21,7 +31,7 @@
                         relativeToURL:baseURL];
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"GET"];
-    url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:@"?address=%@&api_key=%@", address, publicKey]];
+    url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:@"?address=%@&api_key=%@", address, self.publicKey]];
     [request setURL:url];
 
     [NSURLConnection sendAsynchronousRequest:request
@@ -40,7 +50,11 @@
                                    }
 
                                    BOOL isValid = [[json valueForKey:@"is_valid"] boolValue];
-                                   NSString *didYouMean = [self checkForNull:[json valueForKey:@"did_you_mean"]];
+                                   
+                                   NSString *didYouMean = nil;
+                                   if (![[json valueForKey:@"did_you_mean"] isKindOfClass:[NSNull class]]) {
+                                       didYouMean = [json valueForKey:@"did_you_mean"];
+                                   }
 
                                    dispatch_async(dispatch_get_main_queue(), ^{
                                        success(isValid, didYouMean);
@@ -53,14 +67,6 @@
                                    });
                                }
                            }];
-}
-
-+ (id)checkForNull:(id)value
-{
-    if([value isKindOfClass:[NSNull class]]) {
-        return nil;
-    }
-    return value;
 }
 
 @end
