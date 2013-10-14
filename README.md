@@ -16,4 +16,4 @@ BZGMailgunEmailValidator *validator = [BZGMailgunEmailValidator validatorWithPub
                       }];
 ```
 
-To see it in action, check out https://github.com/benzguo/BZGSignupForm
+To see it in action, check out https://github.com/benzguo/BZGFormViewController
