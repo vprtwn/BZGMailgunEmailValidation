@@ -30,4 +30,5 @@ http://documentation.mailgun.com/api-email-validation.html
 
 http://www.regular-expressions.info/email.html
 
-https://wiki.mozilla.org/TLD_List
+### Roadmap
+* perform better fallback validation by incorporating a list of TLDs into the regex. https://wiki.mozilla.org/TLD_List
