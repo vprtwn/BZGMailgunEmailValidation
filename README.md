@@ -3,13 +3,15 @@
 A simple objective-C wrapper for the Mailgun email validation API.
 
 ```objective-c
-BZGMailgunEmailValidator *validator = [BZGMailgunEmailValidator validatorWithPublicKey:YOUR_PUBLIC_KEY 
-                                                                        operationQueue:queue];
+BZGMailgunEmailValidator *validator = 
+    [BZGMailgunEmailValidator validatorWithPublicKey:YOUR_PUBLIC_KEY 
+                                      operationQueue:queue];
+
 [validator validateEmailAddress:self.emailFieldCell.textField.text
                         success:^(BOOL isValid, NSString *didYouMean) {
-                        // :)
+                        // Validation succeeded
                       } failure:^(NSError *error) {
-                        // :(
+                        // Validation failed
                       }];
 ```
 
