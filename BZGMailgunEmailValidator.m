@@ -30,7 +30,7 @@
 
     NSURL *url = [NSURL URLWithString:@"address/validate"
                         relativeToURL:baseURL];
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"GET"];
     url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:@"?address=%@&api_key=%@", address, self.publicKey]];
     [request setURL:url];
@@ -45,7 +45,7 @@
                                    json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
                                    if (json) {
                                        BOOL isValid = [[json valueForKey:@"is_valid"] boolValue];
-                                       
+
                                        NSString *didYouMean = nil;
                                        if (![[json valueForKey:@"did_you_mean"] isKindOfClass:[NSNull class]]) {
                                            didYouMean = [json valueForKey:@"did_you_mean"];
@@ -57,7 +57,7 @@
                                        return;
                                    }
                                }
-                               
+
                                if (self.performsFallbackValidation) {
                                    // from http://www.regular-expressions.info/email.html
                                    NSString *pattern = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
