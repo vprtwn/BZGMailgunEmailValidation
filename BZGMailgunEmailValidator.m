@@ -24,6 +24,8 @@
                      success:(void (^)(BOOL isValid, NSString *didYouMean))success
                      failure:(void (^)(NSError *error))failure
 {
+    NSParameterAssert(success);
+
     NSURL *baseURL = [NSURL URLWithString:@"https://api.mailgun.net/v2/"];
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
     operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
@@ -34,6 +36,7 @@
     [request setHTTPMethod:@"GET"];
     url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:@"?address=%@&api_key=%@", address, self.publicKey]];
     [request setURL:url];
+    [request setTimeoutInterval:3];
 
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:operationQueue
@@ -59,25 +62,26 @@
                                }
 
                                if (self.performsFallbackValidation) {
-                                   // from http://www.regular-expressions.info/email.html
+                                   // regex from http://www.regular-expressions.info/email.html
                                    NSString *pattern = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
-                                   NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:pattern
-                                                                                                     options:NSRegularExpressionCaseInsensitive
-                                                                                                       error:&error];
-                                   NSUInteger matches = [regex matchesInString:address options:0 range:NSMakeRange(0, address.length)];
+                                   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
                                    if (error) {
                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                           failure(error);
+                                           if (failure) {
+                                               failure(error);
+                                           }
                                        });
                                    } else {
-                                       BOOL isValid = matches != 0;
+                                       BOOL isValid = [predicate evaluateWithObject:address];
                                        dispatch_async(dispatch_get_main_queue(), ^{
                                            success(isValid, nil);
                                        });
                                    }
                                } else {
                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                       failure(connectionError);
+                                       if (failure) {
+                                           failure(connectionError);
+                                       }
                                    });
                                }
                            }];
