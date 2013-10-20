@@ -19,8 +19,8 @@
 /**
  * Loads a validation request for the given email address. Executes the success block if the request succeeds and the failure block if the request fails.
  * @param address The email address to validate.
- * @param success The block to execute when the request succeeds.
- * @param failure The block to execute when the request fails.
+ * @param success The block to execute when the request succeeds (required).
+ * @param failure The block to execute when the request fails (optional).
  */
 - (void)validateEmailAddress:(NSString *)address
                      success:(void (^)(BOOL isValid, NSString *didYouMean))success
