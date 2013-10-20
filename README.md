@@ -18,6 +18,11 @@ BZGMailgunEmailValidator *validator =
 By default, a BZGMailgunEmailValidator instance performs fallback regex-based validation if Mailgun validation fails. 
 Set `performsFallbackValidation` to `NO` if you'd prefer to handle this case yourself.
 
+### Installation
+If you're using Cocoapods, simply add `pod 'BZGMailgunEmailValidation'` to your `Podfile`. 
+
+Otherwise, add `BZGMailgunEmailValidator.h` and `BZGMailgunEmailValidator.m` to your project.
+
 ### References
 http://blog.mailgun.com/post/free-email-validation-api-for-web-forms/
 
