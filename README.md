@@ -28,7 +28,7 @@ http://blog.mailgun.com/post/free-email-validation-api-for-web-forms/
 
 http://documentation.mailgun.com/api-email-validation.html
 
-http://www.regular-expressions.info/email.html
-
 ### Roadmap
-* perform better fallback validation by incorporating a list of TLDs into the regex. https://wiki.mozilla.org/TLD_List
+* perform better fallback validation by incorporating a list of TLDs into the regex
+  - http://www.regular-expressions.info/email.html
+  - https://wiki.mozilla.org/TLD_List
