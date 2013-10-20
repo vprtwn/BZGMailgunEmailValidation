@@ -3,18 +3,16 @@
 @interface BZGMailgunEmailValidator ()
 
 @property (strong, nonatomic) NSString *publicKey;
-@property (strong, nonatomic) NSOperationQueue *operationQueue;
 
 @end
 
 @implementation BZGMailgunEmailValidator
 
-+ (BZGMailgunEmailValidator *)validatorWithPublicKey:(NSString *)publicKey operationQueue:(NSOperationQueue *)operationQueue
++ (BZGMailgunEmailValidator *)validatorWithPublicKey:(NSString *)publicKey
 {
     BZGMailgunEmailValidator *validator = [[BZGMailgunEmailValidator alloc] init];
     if (validator) {
         validator.publicKey = publicKey;
-        validator.operationQueue = operationQueue;
         validator.performsFallbackValidation = YES;
     }
     return validator;
@@ -30,8 +28,7 @@
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
     operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
 
-    NSURL *url = [NSURL URLWithString:@"address/validate"
-                        relativeToURL:baseURL];
+    NSURL *url = [NSURL URLWithString:@"address/validate" relativeToURL:baseURL];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"GET"];
     url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:@"?address=%@&api_key=%@", address, self.publicKey]];
