@@ -3,6 +3,7 @@
 @interface BZGMailgunEmailValidator ()
 
 @property (strong, nonatomic) NSString *publicKey;
+@property (strong, nonatomic) NSOperationQueue *operationQueue;
 
 @end
 
@@ -14,6 +15,8 @@
     if (validator) {
         validator.publicKey = publicKey;
         validator.performsFallbackValidation = YES;
+        validator.operationQueue = [[NSOperationQueue alloc] init];
+        validator.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
     }
     return validator;
 }
@@ -25,8 +28,6 @@
     NSParameterAssert(success);
 
     NSURL *baseURL = [NSURL URLWithString:@"https://api.mailgun.net/v2/"];
-    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-    operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
 
     NSURL *url = [NSURL URLWithString:@"address/validate" relativeToURL:baseURL];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -36,7 +37,7 @@
     [request setTimeoutInterval:3];
 
     [NSURLConnection sendAsynchronousRequest:request
-                                       queue:operationQueue
+                                       queue:self.operationQueue
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
                                NSDictionary *json = nil;
                                NSError *error = nil;
