@@ -2,12 +2,9 @@
 
 A simple objective-C wrapper for the Mailgun email validation API.
 
-http://blog.mailgun.com/post/free-email-validation-api-for-web-forms/
-
-http://documentation.mailgun.com/api-email-validation.html
-
 ```objective-c
-BZGMailgunEmailValidator *validator = [BZGMailgunEmailValidator validatorWithPublicKey:YOUR_MAILGUN_PUBLIC_KEY operationQueue:queue];
+BZGMailgunEmailValidator *validator = [BZGMailgunEmailValidator validatorWithPublicKey:YOUR_PUBLIC_KEY 
+                                                                        operationQueue:queue];
 [validator validateEmailAddress:self.emailFieldCell.textField.text
                         success:^(BOOL isValid, NSString *didYouMean) {
                         // :)
@@ -16,4 +13,14 @@ BZGMailgunEmailValidator *validator = [BZGMailgunEmailValidator validatorWithPub
                       }];
 ```
 
-To see it in action, check out https://github.com/benzguo/BZGFormViewController
+By default, a BZGMailgunEmailValidator instance performs fallback regex-based validation if Mailgun validation fails. 
+Set `performsFallbackValidation` to `NO` if you'd prefer to handle this case yourself.
+
+### References
+http://blog.mailgun.com/post/free-email-validation-api-for-web-forms/
+
+http://documentation.mailgun.com/api-email-validation.html
+
+http://www.regular-expressions.info/email.html
+
+https://wiki.mozilla.org/TLD_List
