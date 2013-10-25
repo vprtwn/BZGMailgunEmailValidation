@@ -32,6 +32,8 @@
     NSURL *url = [NSURL URLWithString:@"address/validate" relativeToURL:baseURL];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"GET"];
+    address = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
+            kCFAllocatorDefault, (CFStringRef)address, NULL, CFSTR("!#$%&'*+-/=?^_`{|}~ "), kCFStringEncodingUTF8);
     url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:@"?address=%@&api_key=%@", address, self.publicKey]];
     [request setURL:url];
     [request setTimeoutInterval:3];
