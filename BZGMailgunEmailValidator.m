@@ -48,15 +48,21 @@
                                    json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
                                    if (json) {
                                        BOOL isValid = [[json valueForKey:@"is_valid"] boolValue];
-
-                                       NSString *didYouMean = nil;
-                                       if (![[json valueForKey:@"did_you_mean"] isKindOfClass:[NSNull class]]) {
-                                           didYouMean = [json valueForKey:@"did_you_mean"];
+                                        NSString *didYouMean = nil;
+	                                       if (![[json valueForKey:@"did_you_mean"] isKindOfClass:[NSNull class]]) {
+	                                           didYouMean = [json valueForKey:@"did_you_mean"];
+	                                       }
+                                        if(isValid == YES) {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               success(isValid, didYouMean);
+                                           });
+                                       } else {
+                                           NSError *errorVal = nil;
+                                           
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               failure(errorVal);
+                                           });
                                        }
-
-                                       dispatch_async(dispatch_get_main_queue(), ^{
-                                           success(isValid, didYouMean);
-                                       });
                                        return;
                                    }
                                }
