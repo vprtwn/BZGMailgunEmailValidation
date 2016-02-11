@@ -19,7 +19,7 @@ BZGMailgunEmailValidator *validator =
 * Caveat implementor: success and failure blocks are executed on the main queue.
 
 ### Installation
-If you're using Cocoapods, simply add `pod 'BZGMailgunEmailValidation'` to your `Podfile`. 
+If you're using CocoaPods, simply add `pod 'BZGMailgunEmailValidation'` to your `Podfile`. 
 
 Otherwise, add `BZGMailgunEmailValidator.h` and `BZGMailgunEmailValidator.m` to your project.
 
